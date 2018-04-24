@@ -1,9 +1,13 @@
 $(document).ready(function(){
+    $val = ($('#alert').text());
+    if ($val.length>0) {
+        swal($val)
+    }
     $('.scrollspy').scrollSpy({scrollOffset: 50});
 
     var TxtType = function(el, toRotate, period) {
         this.toRotate = toRotate;
-        this.el = el;
+        this.el = el;   
         this.loopNum = 0;
         this.period = parseInt(period, 10) || 2000;
         this.txt = '';

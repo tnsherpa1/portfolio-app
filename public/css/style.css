@@ -31,8 +31,18 @@ blockquote {
     blink-caret .5s step-end infinite;
 }
   
-  /* The typewriter cursor effect */
-  @keyframes blink-caret {
-    from, to { color: transparent }
-    50% { color: #333 }
-  }
+/* The typewriter cursor effect */
+@keyframes blink-caret {
+from, to { color: transparent }
+50% { color: #333 }
+}
+#alert {
+    display: none;
+}
+
+html, body {
+    height: 100%;
+}
+.section {
+    padding: 50px;
+}

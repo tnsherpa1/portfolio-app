@@ -1,16 +1,28 @@
 const express = require('express')
+const dotenv = require('dotenv')
 const hbs = require('express-handlebars')
 const app = express()
 const bodyParser = require('body-parser')
-const nodemailer = require('nodemailer');
+const nodemailer = require('nodemailer')
+const flash = require('connect-flash');
+const session = require('express-session'); 
+const swal = require('sweetalert')
 
+dotenv.config()
+app.use(session({
+    secret: 'sherpa',
+    resave: true,
+    saveUninitialized: true
+  }));
+app.use(flash());
 app.use(bodyParser.urlencoded({ extended: false }))
 app.engine('handlebars', hbs({ defaultLayout: 'index', partialsDir: __dirname + '/views/partials/' }))
 app.set('view engine', 'handlebars')
 app.use('/public', express.static('public'));
-
+app.use('/vendors', express.static('vendors'));
+swal("Hello world!");
 app.get('/', (req, res) => {
-    res.render('home')
+    res.render('home', {msg: req.flash('success')})
 })
 
 app.post('/message', function(req, res){
@@ -27,39 +39,33 @@ app.post('/message', function(req, res){
       <h3>Message</h3>
       <p>${req.body.message}</p>
     `;
-    // Generate test SMTP service account from ethereal.email
-    // Only needed if you don't have a real mail account for testing
     nodemailer.createTestAccount((err, account) => {
-        // create reusable transporter object using the default SMTP transport
         let transporter = nodemailer.createTransport({
-            host: 'smtp.gmail.com',
-            port: 465,
-            secure: true, // true for 465, false for other ports
+            host: process.env.HOSTNAME,
+            port: process.env.SMTP_PORT,
+            secure: process.env.SECURE_FLAG,
             auth: {
-                user: 'tfeiser2014', // generated ethereal user
-                pass: 'Cartoons2' // generated ethereal password
+                user: process.env.USER_ID,
+                pass: process.env.USER_PWD
             }
         });
     
-        // setup email data with unicode symbols
         let mailOptions = {
-            from: req.body.name, // sender address
-            to: 'tnsherpa1@gmail.com', // list of receivers
-            subject: 'Message from TashiSherpa.io ✔', // Subject line
-            html: output // html body
+            from: req.body.name,
+            to: 'tnsherpa1@gmail.com',
+            subject: 'Message from TashiSherpa.io ✔',
+            html: output
         };
-    
-        // send mail with defined transport object
+
         transporter.sendMail(mailOptions, (error, info) => {
             if (error) {
                 return console.log(error);
+            } else {
+                console.log('Message sent: %s', info.messageId)
+                console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info))
+                req.flash('success', 'Your message has been successfully sent')
+                res.redirect('/')
             }
-            console.log('Message sent: %s', info.messageId);
-            // Preview only available when sending through an Ethereal account
-            console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
-    
-            // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
-            // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
         });
     });
     
