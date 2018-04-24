@@ -1,0 +1,38 @@
+nav.nav-center ul {
+    text-align: center;
+}
+nav.nav-center ul li {
+    display: inline;
+    float: none;
+}
+nav.nav-center ul li a {
+    display: inline-block;
+}
+nav {
+    margin-bottom: 40px;
+}
+#avatar {
+    border-radius: 50%;
+}
+.footer-copyright {
+    height:400px;
+    background: #E0E0E0;
+}
+blockquote {
+    padding: 5px 50px;
+}
+.typewrite {
+    font-family: monospace;
+    letter-spacing: .15em; /* Adjust as needed */
+  }
+.cursor {
+    color: #333;
+    animation: 
+    blink-caret .5s step-end infinite;
+}
+  
+  /* The typewriter cursor effect */
+  @keyframes blink-caret {
+    from, to { color: transparent }
+    50% { color: #333 }
+  }
