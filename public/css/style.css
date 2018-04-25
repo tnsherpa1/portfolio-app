@@ -47,3 +47,6 @@ html, body {
 .section {
     padding: 50px;
 }
+form .input-field input {
+    font-size: 2rem;
+}
