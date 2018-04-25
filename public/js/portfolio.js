@@ -1,8 +1,11 @@
+"use strict"
 $(document).ready(function(){
-    $val = ($('#alert').text());
-    if ($val.length>0) {
-        swal($val)
+    function alertSweet(){
+        if ($('#alert').text().length>0) {
+            swal($('#alert').text())
+        }
     }
+    alertSweet();
     $('.scrollspy').scrollSpy({scrollOffset: 50});
 
     var TxtType = function(el, toRotate, period) {
